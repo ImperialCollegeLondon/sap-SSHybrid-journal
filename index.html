@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Subspace-Hybrid Journal Demo</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdn.rawgit.com/download/polymer-cdn/1.5.0/lib/webcomponentsjs/webcomponents-lite.min.js"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="./css/trackswitch.css" />
+    <style media="screen">
+        body {font-family: sans-serif;}
+    </style>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {font-family: Arial;}
+
+        /* Style the tab */
+        .tab {
+          overflow: hidden;
+          border: 1px solid #ccc;
+          background-color: #f1f1f1;
+        }
+
+        /* Style the buttons inside the tab */
+        .tab button {
+          background-color: inherit;
+          float: left;
+          border: none;
+          outline: none;
+          cursor: pointer;
+          padding: 14px 16px;
+          transition: 0.3s;
+          font-size: 17px;
+        }
+
+        /* Change background color of buttons on hover */
+        .tab button:hover {
+          background-color: #ddd;
+        }
+
+        /* Create an active/current tablink class */
+        .tab button.active {
+          background-color: #ccc;
+        }
+
+        /* Style the tab content */
+        .tabcontent {
+          display: none;
+          padding: 6px 12px;
+          border: 1px solid #ccc;
+          border-top: none;
+        }
+        
+        
+        /* Three image containers (use 25% for four, and 50% for two, etc) */
+       .column {
+         float: left;
+         width: 33.33%;
+         padding: 5px;
+       }
+
+       /* Clear floats after image containers */
+       .row::after {
+         content: "";
+         clear: both;
+         display: table;
+       }
+    </style>
+    
+</head>
+<body>
+    
+    <h1> 01-Mar-2023 SS-Hybrid MVDR beamforming Journal Demo on SPEAR dataset </h1>
+    by Sina Hafezi<br>
+    
+    <p>Scenario:</p>
+    <ul>
+      <li>6 sec chunks from <a href="https://imperialcollegelondon.github.io/spear-challenge/" target="_blank">SPEAR</a> D1 (real-recording EasyCom) & D2 (simulated EasyCom) </li>
+      <li>Categorised based on the number of active sources in the chunk</li>
+      <li>Sample rate: 10kHz, STFT frame size: 16ms, STFT frame step: 8ms</li>
+      <li>Array microphones: Channels 1 to 6. Array reference channel: 2 (front-middle mic).</li>
+    </ul>
+
+    <p>List of Methods:</p>
+    <ul>
+      <li>Ref: Reference Signal (D1: time- & level-aligned close-talking headset mic, D2: anechoic target @ the array's reference channel)</li>
+      <li>Pass: Un-processed signal</li>
+      <li>Iso: Isotropic MVDR (Superdirective)</li>
+      <li>SSH: Subspace-Hybrid MVDR (Parametric Dictionary)</li>
+      <li>SSHK: Subspace-Hybrid MVDR (Data-Driven Dictionary)</li>
+    </ul>
+ 
+
+    <div class="tab">
+      <button class="tablinks" onclick="openCity(event, '1_10')" id="defaultOpen">1_10</button>
+      <button class="tablinks" onclick="openCity(event, '1_11')" id="defaultOpen">1_11</button>
+      <button class="tablinks" onclick="openCity(event, '1_12')" id="defaultOpen">1_12</button>
+      <button class="tablinks" onclick="openCity(event, '1_14')" id="defaultOpen">1_14</button>
+      <button class="tablinks" onclick="openCity(event, '1_20')" id="defaultOpen">1_20</button>
+      <button class="tablinks" onclick="openCity(event, '2_3')" id="defaultOpen">2_3</button>
+      <button class="tablinks" onclick="openCity(event, '2_9')" id="defaultOpen">2_9</button>
+      <button class="tablinks" onclick="openCity(event, '2_10')" id="defaultOpen">2_10</button>
+      <button class="tablinks" onclick="openCity(event, '2_13')" id="defaultOpen">2_13</button>
+      <button class="tablinks" onclick="openCity(event, '2_20')" id="defaultOpen">2_20</button>
+      <button class="tablinks" onclick="openCity(event, '3_2')" id="defaultOpen">3_2</button>
+      <button class="tablinks" onclick="openCity(event, '3_7')" id="defaultOpen">3_7</button>
+      <button class="tablinks" onclick="openCity(event, '3_8')" id="defaultOpen">3_8</button>
+      <button class="tablinks" onclick="openCity(event, '3_14')" id="defaultOpen">3_14</button>
+      <button class="tablinks" onclick="openCity(event, '3_15')" id="defaultOpen">3_15</button>
+    </div>
+
+    
+    
+    <div id="1_10" class="tabcontent">
+      <p>nSources: 1, Trial: 10, Session: 10, File: 28-00-653, Target ID: 6</p>
+      <div class="player">
+          <img class="seekable" data-seek-margin-left="5.0" data-seek-margin-right="7.0" src="multimedia/20230301_beamformers_SSHybrid/1_10/D1_ref.png">
+          <ts-track title="(D1) Ref" data-img="multimedia/20230301_beamformers_SSHybrid/1_10/D1_ref.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/1_10/D1_ref.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D1) Pass" data-img="multimedia/20230301_beamformers_SSHybrid/1_10/D1_pass.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/1_10/D1_pass.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D1) Iso" data-img="multimedia/20230301_beamformers_SSHybrid/1_10/D1_iso.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/1_10/D1_iso.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D1) SSH" data-img="multimedia/20230301_beamformers_SSHybrid/1_10/D1_sshyb.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/1_10/D1_sshyb.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D1) SSH-K" data-img="multimedia/20230301_beamformers_SSHybrid/1_10/D1_sshybk303.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/1_10/D1_sshybk303.wav" type="audio/wav"></ts-source>
+              
+          
+          <ts-track title="(D2) Ref" data-img="multimedia/20230301_beamformers_SSHybrid/1_10/D2_ref.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/1_10/D2_ref.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D2) Pass" data-img="multimedia/20230301_beamformers_SSHybrid/1_10/D2_pass.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/1_10/D2_pass.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D2) Iso" data-img="multimedia/20230301_beamformers_SSHybrid/1_10/D2_iso.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/1_10/D2_iso.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D2) SSH" data-img="multimedia/20230301_beamformers_SSHybrid/1_10/D2_sshyb.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/1_10/D2_sshyb.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D2) SSH-K" data-img="multimedia/20230301_beamformers_SSHybrid/1_10/D2_sshybk303.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/1_10/D2_sshybk303.wav" type="audio/wav"></ts-source>
+              
+          
+      </div>
+   </div>
+  
+  
+  <div id="1_11" class="tabcontent">
+    <p>nSources: 1, Trial: 11, Session: 11, File: 25-00-631, Target ID: 3</p>
+    <div class="player">
+        <img class="seekable" data-seek-margin-left="5.0" data-seek-margin-right="7.0" src="multimedia/20230301_beamformers_SSHybrid/1_11/D1_ref.png">
+        <ts-track title="(D1) Ref" data-img="multimedia/20230301_beamformers_SSHybrid/1_11/D1_ref.png">
+            <ts-source src="multimedia/20230301_beamformers_SSHybrid/1_11/D1_ref.wav" type="audio/wav"></ts-source>
+            
+        <ts-track title="(D1) Pass" data-img="multimedia/20230301_beamformers_SSHybrid/1_11/D1_pass.png">
+            <ts-source src="multimedia/20230301_beamformers_SSHybrid/1_11/D1_pass.wav" type="audio/wav"></ts-source>
+            
+        <ts-track title="(D1) Iso" data-img="multimedia/20230301_beamformers_SSHybrid/1_11/D1_iso.png">
+            <ts-source src="multimedia/20230301_beamformers_SSHybrid/1_11/D1_iso.wav" type="audio/wav"></ts-source>
+            
+        <ts-track title="(D1) SSH" data-img="multimedia/20230301_beamformers_SSHybrid/1_11/D1_sshyb.png">
+            <ts-source src="multimedia/20230301_beamformers_SSHybrid/1_11/D1_sshyb.wav" type="audio/wav"></ts-source>
+            
+        <ts-track title="(D1) SSH-K" data-img="multimedia/20230301_beamformers_SSHybrid/1_11/D1_sshybk303.png">
+            <ts-source src="multimedia/20230301_beamformers_SSHybrid/1_11/D1_sshybk303.wav" type="audio/wav"></ts-source>
+            
+        
+        <ts-track title="(D2) Ref" data-img="multimedia/20230301_beamformers_SSHybrid/1_11/D2_ref.png">
+            <ts-source src="multimedia/20230301_beamformers_SSHybrid/1_11/D2_ref.wav" type="audio/wav"></ts-source>
+            
+        <ts-track title="(D2) Pass" data-img="multimedia/20230301_beamformers_SSHybrid/1_11/D2_pass.png">
+            <ts-source src="multimedia/20230301_beamformers_SSHybrid/1_11/D2_pass.wav" type="audio/wav"></ts-source>
+            
+        <ts-track title="(D2) Iso" data-img="multimedia/20230301_beamformers_SSHybrid/1_11/D2_iso.png">
+            <ts-source src="multimedia/20230301_beamformers_SSHybrid/1_11/D2_iso.wav" type="audio/wav"></ts-source>
+            
+        <ts-track title="(D2) SSH" data-img="multimedia/20230301_beamformers_SSHybrid/1_11/D2_sshyb.png">
+            <ts-source src="multimedia/20230301_beamformers_SSHybrid/1_11/D2_sshyb.wav" type="audio/wav"></ts-source>
+            
+        <ts-track title="(D2) SSH-K" data-img="multimedia/20230301_beamformers_SSHybrid/1_11/D2_sshybk303.png">
+            <ts-source src="multimedia/20230301_beamformers_SSHybrid/1_11/D2_sshybk303.wav" type="audio/wav"></ts-source>
+            
+        
+        </div>
+     </div>
+
+  
+  <div id="1_12" class="tabcontent">
+    <p>nSources: 1, Trial: 12, Session: 12, File: 22-00-569, Target ID: 4</p>
+    <div class="player">
+        <img class="seekable" data-seek-margin-left="5.0" data-seek-margin-right="7.0" src="multimedia/20230301_beamformers_SSHybrid/1_12/D1_ref.png">
+        <ts-track title="(D1) Ref" data-img="multimedia/20230301_beamformers_SSHybrid/1_12/D1_ref.png">
+            <ts-source src="multimedia/20230301_beamformers_SSHybrid/1_12/D1_ref.wav" type="audio/wav"></ts-source>
+            
+        <ts-track title="(D1) Pass" data-img="multimedia/20230301_beamformers_SSHybrid/1_12/D1_pass.png">
+            <ts-source src="multimedia/20230301_beamformers_SSHybrid/1_12/D1_pass.wav" type="audio/wav"></ts-source>
+            
+        <ts-track title="(D1) Iso" data-img="multimedia/20230301_beamformers_SSHybrid/1_12/D1_iso.png">
+            <ts-source src="multimedia/20230301_beamformers_SSHybrid/1_12/D1_iso.wav" type="audio/wav"></ts-source>
+            
+        <ts-track title="(D1) SSH" data-img="multimedia/20230301_beamformers_SSHybrid/1_12/D1_sshyb.png">
+            <ts-source src="multimedia/20230301_beamformers_SSHybrid/1_12/D1_sshyb.wav" type="audio/wav"></ts-source>
+            
+        <ts-track title="(D1) SSH-K" data-img="multimedia/20230301_beamformers_SSHybrid/1_12/D1_sshybk303.png">
+            <ts-source src="multimedia/20230301_beamformers_SSHybrid/1_12/D1_sshybk303.wav" type="audio/wav"></ts-source>
+            
+        
+        <ts-track title="(D2) Ref" data-img="multimedia/20230301_beamformers_SSHybrid/1_12/D2_ref.png">
+            <ts-source src="multimedia/20230301_beamformers_SSHybrid/1_12/D2_ref.wav" type="audio/wav"></ts-source>
+            
+        <ts-track title="(D2) Pass" data-img="multimedia/20230301_beamformers_SSHybrid/1_12/D2_pass.png">
+            <ts-source src="multimedia/20230301_beamformers_SSHybrid/1_12/D2_pass.wav" type="audio/wav"></ts-source>
+            
+        <ts-track title="(D2) Iso" data-img="multimedia/20230301_beamformers_SSHybrid/1_12/D2_iso.png">
+            <ts-source src="multimedia/20230301_beamformers_SSHybrid/1_12/D2_iso.wav" type="audio/wav"></ts-source>
+            
+        <ts-track title="(D2) SSH" data-img="multimedia/20230301_beamformers_SSHybrid/1_12/D2_sshyb.png">
+            <ts-source src="multimedia/20230301_beamformers_SSHybrid/1_12/D2_sshyb.wav" type="audio/wav"></ts-source>
+            
+        <ts-track title="(D2) SSH-K" data-img="multimedia/20230301_beamformers_SSHybrid/1_12/D2_sshybk303.png">
+            <ts-source src="multimedia/20230301_beamformers_SSHybrid/1_12/D2_sshybk303.wav" type="audio/wav"></ts-source>
+            
+        
+        </div>
+     </div>
+
+  
+  <div id="1_14" class="tabcontent">
+    <p>nSources: 1, Trial: 14, Session: 2, File: 16-00-507, Target ID: 3</p>
+    <div class="player">
+        <img class="seekable" data-seek-margin-left="5.0" data-seek-margin-right="7.0" src="multimedia/20230301_beamformers_SSHybrid/1_14/D1_ref.png">
+        <ts-track title="(D1) Ref" data-img="multimedia/20230301_beamformers_SSHybrid/1_14/D1_ref.png">
+            <ts-source src="multimedia/20230301_beamformers_SSHybrid/1_14/D1_ref.wav" type="audio/wav"></ts-source>
+            
+        <ts-track title="(D1) Pass" data-img="multimedia/20230301_beamformers_SSHybrid/1_14/D1_pass.png">
+            <ts-source src="multimedia/20230301_beamformers_SSHybrid/1_14/D1_pass.wav" type="audio/wav"></ts-source>
+            
+        <ts-track title="(D1) Iso" data-img="multimedia/20230301_beamformers_SSHybrid/1_14/D1_iso.png">
+            <ts-source src="multimedia/20230301_beamformers_SSHybrid/1_14/D1_iso.wav" type="audio/wav"></ts-source>
+            
+        <ts-track title="(D1) SSH" data-img="multimedia/20230301_beamformers_SSHybrid/1_14/D1_sshyb.png">
+            <ts-source src="multimedia/20230301_beamformers_SSHybrid/1_14/D1_sshyb.wav" type="audio/wav"></ts-source>
+            
+        <ts-track title="(D1) SSH-K" data-img="multimedia/20230301_beamformers_SSHybrid/1_14/D1_sshybk303.png">
+            <ts-source src="multimedia/20230301_beamformers_SSHybrid/1_14/D1_sshybk303.wav" type="audio/wav"></ts-source>
+            
+        
+        <ts-track title="(D2) Ref" data-img="multimedia/20230301_beamformers_SSHybrid/1_14/D2_ref.png">
+            <ts-source src="multimedia/20230301_beamformers_SSHybrid/1_14/D2_ref.wav" type="audio/wav"></ts-source>
+            
+        <ts-track title="(D2) Pass" data-img="multimedia/20230301_beamformers_SSHybrid/1_14/D2_pass.png">
+            <ts-source src="multimedia/20230301_beamformers_SSHybrid/1_14/D2_pass.wav" type="audio/wav"></ts-source>
+            
+        <ts-track title="(D2) Iso" data-img="multimedia/20230301_beamformers_SSHybrid/1_14/D2_iso.png">
+            <ts-source src="multimedia/20230301_beamformers_SSHybrid/1_14/D2_iso.wav" type="audio/wav"></ts-source>
+            
+        <ts-track title="(D2) SSH" data-img="multimedia/20230301_beamformers_SSHybrid/1_14/D2_sshyb.png">
+            <ts-source src="multimedia/20230301_beamformers_SSHybrid/1_14/D2_sshyb.wav" type="audio/wav"></ts-source>
+            
+        <ts-track title="(D2) SSH-K" data-img="multimedia/20230301_beamformers_SSHybrid/1_14/D2_sshybk303.png">
+            <ts-source src="multimedia/20230301_beamformers_SSHybrid/1_14/D2_sshybk303.wav" type="audio/wav"></ts-source>
+            
+        
+        </div>
+     </div>
+
+
+  
+    
+    <div id="1_20" class="tabcontent">
+      <p>nSources: 1, Trial: 20, Session: 10, File: 07-00-389, Target ID: 6</p>
+      <div class="player">
+          <img class="seekable" data-seek-margin-left="5.0" data-seek-margin-right="7.0" src="multimedia/20230301_beamformers_SSHybrid/1_20/D1_ref.png">
+          <ts-track title="(D1) Ref" data-img="multimedia/20230301_beamformers_SSHybrid/1_20/D1_ref.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/1_20/D1_ref.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D1) Pass" data-img="multimedia/20230301_beamformers_SSHybrid/1_20/D1_pass.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/1_20/D1_pass.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D1) Iso" data-img="multimedia/20230301_beamformers_SSHybrid/1_20/D1_iso.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/1_20/D1_iso.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D1) SSH" data-img="multimedia/20230301_beamformers_SSHybrid/1_20/D1_sshyb.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/1_20/D1_sshyb.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D1) SSH-K" data-img="multimedia/20230301_beamformers_SSHybrid/1_20/D1_sshybk303.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/1_20/D1_sshybk303.wav" type="audio/wav"></ts-source>
+              
+          
+          <ts-track title="(D2) Ref" data-img="multimedia/20230301_beamformers_SSHybrid/1_20/D2_ref.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/1_20/D2_ref.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D2) Pass" data-img="multimedia/20230301_beamformers_SSHybrid/1_20/D2_pass.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/1_20/D2_pass.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D2) Iso" data-img="multimedia/20230301_beamformers_SSHybrid/1_20/D2_iso.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/1_20/D2_iso.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D2) SSH" data-img="multimedia/20230301_beamformers_SSHybrid/1_20/D2_sshyb.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/1_20/D2_sshyb.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D2) SSH-K" data-img="multimedia/20230301_beamformers_SSHybrid/1_20/D2_sshybk303.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/1_20/D2_sshybk303.wav" type="audio/wav"></ts-source>
+              
+          
+      </div>
+   </div>
+    
+    
+    <div id="2_3" class="tabcontent">
+      <p>nSources: 2, Trial: 03, Session: 3, File: 10-00-415, Target ID: 4</p>
+      <div class="player">
+          <img class="seekable" data-seek-margin-left="5.0" data-seek-margin-right="7.0" src="multimedia/20230301_beamformers_SSHybrid/2_3/D1_ref.png">
+          <ts-track title="(D1) Ref" data-img="multimedia/20230301_beamformers_SSHybrid/2_3/D1_ref.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/2_3/D1_ref.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D1) Pass" data-img="multimedia/20230301_beamformers_SSHybrid/2_3/D1_pass.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/2_3/D1_pass.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D1) Iso" data-img="multimedia/20230301_beamformers_SSHybrid/2_3/D1_iso.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/2_3/D1_iso.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D1) SSH" data-img="multimedia/20230301_beamformers_SSHybrid/2_3/D1_sshyb.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/2_3/D1_sshyb.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D1) SSH-K" data-img="multimedia/20230301_beamformers_SSHybrid/2_3/D1_sshybk303.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/2_3/D1_sshybk303.wav" type="audio/wav"></ts-source>
+              
+          
+          <ts-track title="(D2) Ref" data-img="multimedia/20230301_beamformers_SSHybrid/2_3/D2_ref.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/2_3/D2_ref.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D2) Pass" data-img="multimedia/20230301_beamformers_SSHybrid/2_3/D2_pass.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/2_3/D2_pass.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D2) Iso" data-img="multimedia/20230301_beamformers_SSHybrid/2_3/D2_iso.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/2_3/D2_iso.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D2) SSH" data-img="multimedia/20230301_beamformers_SSHybrid/2_3/D2_sshyb.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/2_3/D2_sshyb.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D2) SSH-K" data-img="multimedia/20230301_beamformers_SSHybrid/2_3/D2_sshybk303.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/2_3/D2_sshybk303.wav" type="audio/wav"></ts-source>
+              
+          
+      </div>
+   </div>
+
+    
+    
+    <div id="2_9" class="tabcontent">
+      <p>nSources: 2, Trial: 09, Session: 10, File: 01-00-304, Target ID: 6</p>
+      <div class="player">
+          <img class="seekable" data-seek-margin-left="5.0" data-seek-margin-right="7.0" src="multimedia/20230301_beamformers_SSHybrid/2_9/D1_ref.png">
+          <ts-track title="(D1) Ref" data-img="multimedia/20230301_beamformers_SSHybrid/2_9/D1_ref.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/2_9/D1_ref.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D1) Pass" data-img="multimedia/20230301_beamformers_SSHybrid/2_9/D1_pass.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/2_9/D1_pass.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D1) Iso" data-img="multimedia/20230301_beamformers_SSHybrid/2_9/D1_iso.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/2_9/D1_iso.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D1) SSH" data-img="multimedia/20230301_beamformers_SSHybrid/2_9/D1_sshyb.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/2_9/D1_sshyb.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D1) SSH-K" data-img="multimedia/20230301_beamformers_SSHybrid/2_9/D1_sshybk303.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/2_9/D1_sshybk303.wav" type="audio/wav"></ts-source>
+              
+          
+          <ts-track title="(D2) Ref" data-img="multimedia/20230301_beamformers_SSHybrid/2_9/D2_ref.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/2_9/D2_ref.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D2) Pass" data-img="multimedia/20230301_beamformers_SSHybrid/2_9/D2_pass.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/2_9/D2_pass.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D2) Iso" data-img="multimedia/20230301_beamformers_SSHybrid/2_9/D2_iso.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/2_9/D2_iso.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D2) SSH" data-img="multimedia/20230301_beamformers_SSHybrid/2_9/D2_sshyb.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/2_9/D2_sshyb.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D2) SSH-K" data-img="multimedia/20230301_beamformers_SSHybrid/2_9/D2_sshybk303.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/2_9/D2_sshybk303.wav" type="audio/wav"></ts-source>
+              
+          
+      </div>
+   </div>
+    
+    
+    <div id="2_10" class="tabcontent">
+      <p>nSources: 2, Trial: 10, Session: 12, File: 05-00-338, Target ID: 4</p>
+      <div class="player">
+          <img class="seekable" data-seek-margin-left="5.0" data-seek-margin-right="7.0" src="multimedia/20230301_beamformers_SSHybrid/2_10/D1_ref.png">
+          <ts-track title="(D1) Ref" data-img="multimedia/20230301_beamformers_SSHybrid/2_10/D1_ref.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/2_10/D1_ref.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D1) Pass" data-img="multimedia/20230301_beamformers_SSHybrid/2_10/D1_pass.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/2_10/D1_pass.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D1) Iso" data-img="multimedia/20230301_beamformers_SSHybrid/2_10/D1_iso.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/2_10/D1_iso.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D1) SSH" data-img="multimedia/20230301_beamformers_SSHybrid/2_10/D1_sshyb.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/2_10/D1_sshyb.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D1) SSH-K" data-img="multimedia/20230301_beamformers_SSHybrid/2_10/D1_sshybk303.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/2_10/D1_sshybk303.wav" type="audio/wav"></ts-source>
+              
+          
+          <ts-track title="(D2) Ref" data-img="multimedia/20230301_beamformers_SSHybrid/2_10/D2_ref.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/2_10/D2_ref.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D2) Pass" data-img="multimedia/20230301_beamformers_SSHybrid/2_10/D2_pass.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/2_10/D2_pass.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D2) Iso" data-img="multimedia/20230301_beamformers_SSHybrid/2_10/D2_iso.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/2_10/D2_iso.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D2) SSH" data-img="multimedia/20230301_beamformers_SSHybrid/2_10/D2_sshyb.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/2_10/D2_sshyb.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D2) SSH-K" data-img="multimedia/20230301_beamformers_SSHybrid/2_10/D2_sshybk303.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/2_10/D2_sshybk303.wav" type="audio/wav"></ts-source>
+              
+          
+      </div>
+   </div>
+    
+
+    
+    <div id="2_13" class="tabcontent">
+      <p>nSources: 2, Trial: 13, Session: 3, File: 08-00-387, Target ID: 6</p>
+      <div class="player">
+          <img class="seekable" data-seek-margin-left="5.0" data-seek-margin-right="7.0" src="multimedia/20230301_beamformers_SSHybrid/2_13/D1_ref.png">
+          <ts-track title="(D1) Ref" data-img="multimedia/20230301_beamformers_SSHybrid/2_13/D1_ref.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/2_13/D1_ref.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D1) Pass" data-img="multimedia/20230301_beamformers_SSHybrid/2_13/D1_pass.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/2_13/D1_pass.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D1) Iso" data-img="multimedia/20230301_beamformers_SSHybrid/2_13/D1_iso.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/2_13/D1_iso.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D1) SSH" data-img="multimedia/20230301_beamformers_SSHybrid/2_13/D1_sshyb.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/2_13/D1_sshyb.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D1) SSH-K" data-img="multimedia/20230301_beamformers_SSHybrid/2_13/D1_sshybk303.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/2_13/D1_sshybk303.wav" type="audio/wav"></ts-source>
+              
+          
+          <ts-track title="(D2) Ref" data-img="multimedia/20230301_beamformers_SSHybrid/2_13/D2_ref.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/2_13/D2_ref.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D2) Pass" data-img="multimedia/20230301_beamformers_SSHybrid/2_13/D2_pass.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/2_13/D2_pass.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D2) Iso" data-img="multimedia/20230301_beamformers_SSHybrid/2_13/D2_iso.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/2_13/D2_iso.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D2) SSH" data-img="multimedia/20230301_beamformers_SSHybrid/2_13/D2_sshyb.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/2_13/D2_sshyb.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D2) SSH-K" data-img="multimedia/20230301_beamformers_SSHybrid/2_13/D2_sshybk303.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/2_13/D2_sshybk303.wav" type="audio/wav"></ts-source>
+              
+      </div>
+   </div>
+
+    
+    <div id="2_20" class="tabcontent">
+      <p>nSources: 2, Trial: 20, Session: 10, File: 12-00-438, Target ID: 4</p>
+      <div class="player">
+          <img class="seekable" data-seek-margin-left="5.0" data-seek-margin-right="7.0" src="multimedia/20230301_beamformers_SSHybrid/2_20/D1_ref.png">
+          <ts-track title="(D1) Ref" data-img="multimedia/20230301_beamformers_SSHybrid/2_20/D1_ref.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/2_20/D1_ref.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D1) Pass" data-img="multimedia/20230301_beamformers_SSHybrid/2_20/D1_pass.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/2_20/D1_pass.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D1) Iso" data-img="multimedia/20230301_beamformers_SSHybrid/2_20/D1_iso.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/2_20/D1_iso.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D1) SSH" data-img="multimedia/20230301_beamformers_SSHybrid/2_20/D1_sshyb.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/2_20/D1_sshyb.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D1) SSH-K" data-img="multimedia/20230301_beamformers_SSHybrid/2_20/D1_sshybk303.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/2_20/D1_sshybk303.wav" type="audio/wav"></ts-source>
+              
+          
+          <ts-track title="(D2) Ref" data-img="multimedia/20230301_beamformers_SSHybrid/2_20/D2_ref.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/2_20/D2_ref.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D2) Pass" data-img="multimedia/20230301_beamformers_SSHybrid/2_20/D2_pass.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/2_20/D2_pass.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D2) Iso" data-img="multimedia/20230301_beamformers_SSHybrid/2_20/D2_iso.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/2_20/D2_iso.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D2) SSH" data-img="multimedia/20230301_beamformers_SSHybrid/2_20/D2_sshyb.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/2_20/D2_sshyb.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D2) SSH-K" data-img="multimedia/20230301_beamformers_SSHybrid/2_20/D2_sshybk303.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/2_20/D2_sshybk303.wav" type="audio/wav"></ts-source>
+              
+          
+      </div>
+   </div>
+    
+    
+    <div id="3_2" class="tabcontent">
+      <p>nSources: 3, Trial: 02, Session: 3, File: 05-00-352, Target ID: 6</p>
+      <div class="player">
+          <img class="seekable" data-seek-margin-left="5.0" data-seek-margin-right="7.0" src="multimedia/20230301_beamformers_SSHybrid/3_2/D1_ref.png">
+          <ts-track title="(D1) Ref" data-img="multimedia/20230301_beamformers_SSHybrid/3_2/D1_ref.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/3_2/D1_ref.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D1) Pass" data-img="multimedia/20230301_beamformers_SSHybrid/3_2/D1_pass.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/3_2/D1_pass.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D1) Iso" data-img="multimedia/20230301_beamformers_SSHybrid/3_2/D1_iso.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/3_2/D1_iso.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D1) SSH" data-img="multimedia/20230301_beamformers_SSHybrid/3_2/D1_sshyb.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/3_2/D1_sshyb.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D1) SSH-K" data-img="multimedia/20230301_beamformers_SSHybrid/3_2/D1_sshybk303.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/3_2/D1_sshybk303.wav" type="audio/wav"></ts-source>
+              
+          
+          <ts-track title="(D2) Ref" data-img="multimedia/20230301_beamformers_SSHybrid/3_2/D2_ref.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/3_2/D2_ref.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D2) Pass" data-img="multimedia/20230301_beamformers_SSHybrid/3_2/D2_pass.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/3_2/D2_pass.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D2) Iso" data-img="multimedia/20230301_beamformers_SSHybrid/3_2/D2_iso.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/3_2/D2_iso.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D2) SSH" data-img="multimedia/20230301_beamformers_SSHybrid/3_2/D2_sshyb.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/3_2/D2_sshyb.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D2) SSH-K" data-img="multimedia/20230301_beamformers_SSHybrid/3_2/D2_sshybk303.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/3_2/D2_sshybk303.wav" type="audio/wav"></ts-source>
+              
+      </div>
+   </div>
+
+  
+  
+  <div id="3_7" class="tabcontent">
+    <p>nSources: 3, Trial: 07, Session: 10, File: 04-00-350, Target ID: 4</p>
+    <div class="player">
+        <img class="seekable" data-seek-margin-left="5.0" data-seek-margin-right="7.0" src="multimedia/20230301_beamformers_SSHybrid/3_7/D1_ref.png">
+        <ts-track title="(D1) Ref" data-img="multimedia/20230301_beamformers_SSHybrid/3_7/D1_ref.png">
+            <ts-source src="multimedia/20230301_beamformers_SSHybrid/3_7/D1_ref.wav" type="audio/wav"></ts-source>
+            
+        <ts-track title="(D1) Pass" data-img="multimedia/20230301_beamformers_SSHybrid/3_7/D1_pass.png">
+            <ts-source src="multimedia/20230301_beamformers_SSHybrid/3_7/D1_pass.wav" type="audio/wav"></ts-source>
+            
+        <ts-track title="(D1) Iso" data-img="multimedia/20230301_beamformers_SSHybrid/3_7/D1_iso.png">
+            <ts-source src="multimedia/20230301_beamformers_SSHybrid/3_7/D1_iso.wav" type="audio/wav"></ts-source>
+            
+        <ts-track title="(D1) SSH" data-img="multimedia/20230301_beamformers_SSHybrid/3_7/D1_sshyb.png">
+            <ts-source src="multimedia/20230301_beamformers_SSHybrid/3_7/D1_sshyb.wav" type="audio/wav"></ts-source>
+            
+        <ts-track title="(D1) SSH-K" data-img="multimedia/20230301_beamformers_SSHybrid/3_7/D1_sshybk303.png">
+            <ts-source src="multimedia/20230301_beamformers_SSHybrid/3_7/D1_sshybk303.wav" type="audio/wav"></ts-source>
+            
+        
+        <ts-track title="(D2) Ref" data-img="multimedia/20230301_beamformers_SSHybrid/3_7/D2_ref.png">
+            <ts-source src="multimedia/20230301_beamformers_SSHybrid/3_7/D2_ref.wav" type="audio/wav"></ts-source>
+            
+        <ts-track title="(D2) Pass" data-img="multimedia/20230301_beamformers_SSHybrid/3_7/D2_pass.png">
+            <ts-source src="multimedia/20230301_beamformers_SSHybrid/3_7/D2_pass.wav" type="audio/wav"></ts-source>
+            
+        <ts-track title="(D2) Iso" data-img="multimedia/20230301_beamformers_SSHybrid/3_7/D2_iso.png">
+            <ts-source src="multimedia/20230301_beamformers_SSHybrid/3_7/D2_iso.wav" type="audio/wav"></ts-source>
+            
+        <ts-track title="(D2) SSH" data-img="multimedia/20230301_beamformers_SSHybrid/3_7/D2_sshyb.png">
+            <ts-source src="multimedia/20230301_beamformers_SSHybrid/3_7/D2_sshyb.wav" type="audio/wav"></ts-source>
+            
+        <ts-track title="(D2) SSH-K" data-img="multimedia/20230301_beamformers_SSHybrid/3_7/D2_sshybk303.png">
+            <ts-source src="multimedia/20230301_beamformers_SSHybrid/3_7/D2_sshybk303.wav" type="audio/wav"></ts-source>
+            
+    </div>
+ </div>
+
+
+  
+    <div id="3_8" class="tabcontent">
+      <p>nSources: 3, Trial: 08, Session: 11, File: 05-00-388, Target ID: 7</p>
+      <div class="player">
+          <img class="seekable" data-seek-margin-left="5.0" data-seek-margin-right="7.0" src="multimedia/20230301_beamformers_SSHybrid/3_8/D1_ref.png">
+          <ts-track title="(D1) Ref" data-img="multimedia/20230301_beamformers_SSHybrid/3_8/D1_ref.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/3_8/D1_ref.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D1) Pass" data-img="multimedia/20230301_beamformers_SSHybrid/3_8/D1_pass.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/3_8/D1_pass.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D1) Iso" data-img="multimedia/20230301_beamformers_SSHybrid/3_8/D1_iso.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/3_8/D1_iso.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D1) SSH" data-img="multimedia/20230301_beamformers_SSHybrid/3_8/D1_sshyb.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/3_8/D1_sshyb.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D1) SSH-K" data-img="multimedia/20230301_beamformers_SSHybrid/3_8/D1_sshybk303.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/3_8/D1_sshybk303.wav" type="audio/wav"></ts-source>
+              
+          
+          <ts-track title="(D2) Ref" data-img="multimedia/20230301_beamformers_SSHybrid/3_8/D2_ref.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/3_8/D2_ref.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D2) Pass" data-img="multimedia/20230301_beamformers_SSHybrid/3_8/D2_pass.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/3_8/D2_pass.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D2) Iso" data-img="multimedia/20230301_beamformers_SSHybrid/3_8/D2_iso.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/3_8/D2_iso.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D2) SSH" data-img="multimedia/20230301_beamformers_SSHybrid/3_8/D2_sshyb.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/3_8/D2_sshyb.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D2) SSH-K" data-img="multimedia/20230301_beamformers_SSHybrid/3_8/D2_sshybk303.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/3_8/D2_sshybk303.wav" type="audio/wav"></ts-source>
+              
+      </div>
+   </div>
+    
+    
+    
+    <div id="3_14" class="tabcontent">
+      <p>nSources: 3, Trial: 14, Session: 10, File: 06-00-364, Target ID: 4</p>
+      <div class="player">
+          <img class="seekable" data-seek-margin-left="5.0" data-seek-margin-right="7.0" src="multimedia/20230301_beamformers_SSHybrid/3_14/D1_ref.png">
+          <ts-track title="(D1) Ref" data-img="multimedia/20230301_beamformers_SSHybrid/3_14/D1_ref.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/3_14/D1_ref.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D1) Pass" data-img="multimedia/20230301_beamformers_SSHybrid/3_14/D1_pass.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/3_14/D1_pass.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D1) Iso" data-img="multimedia/20230301_beamformers_SSHybrid/3_14/D1_iso.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/3_14/D1_iso.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D1) SSH" data-img="multimedia/20230301_beamformers_SSHybrid/3_14/D1_sshyb.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/3_14/D1_sshyb.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D1) SSH-K" data-img="multimedia/20230301_beamformers_SSHybrid/3_14/D1_sshybk303.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/3_14/D1_sshybk303.wav" type="audio/wav"></ts-source>
+              
+          
+          <ts-track title="(D2) Ref" data-img="multimedia/20230301_beamformers_SSHybrid/3_14/D2_ref.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/3_14/D2_ref.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D2) Pass" data-img="multimedia/20230301_beamformers_SSHybrid/3_14/D2_pass.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/3_14/D2_pass.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D2) Iso" data-img="multimedia/20230301_beamformers_SSHybrid/3_14/D2_iso.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/3_14/D2_iso.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D2) SSH" data-img="multimedia/20230301_beamformers_SSHybrid/3_14/D2_sshyb.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/3_14/D2_sshyb.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D2) SSH-K" data-img="multimedia/20230301_beamformers_SSHybrid/3_14/D2_sshybk303.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/3_14/D2_sshybk303.wav" type="audio/wav"></ts-source>
+              
+          
+      </div>
+   </div>
+    
+
+    
+    
+    <div id="3_15" class="tabcontent">
+      <p>nSources: 3, Trial: 15, Session: 11, File: 20-00-568, Target ID: 3</p>
+      <div class="player">
+          <img class="seekable" data-seek-margin-left="5.0" data-seek-margin-right="7.0" src="multimedia/20230301_beamformers_SSHybrid/3_15/D1_ref.png">
+          <ts-track title="(D1) Ref" data-img="multimedia/20230301_beamformers_SSHybrid/3_15/D1_ref.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/3_15/D1_ref.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D1) Pass" data-img="multimedia/20230301_beamformers_SSHybrid/3_15/D1_pass.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/3_15/D1_pass.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D1) Iso" data-img="multimedia/20230301_beamformers_SSHybrid/3_15/D1_iso.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/3_15/D1_iso.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D1) SSH" data-img="multimedia/20230301_beamformers_SSHybrid/3_15/D1_sshyb.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/3_15/D1_sshyb.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D1) SSH-K" data-img="multimedia/20230301_beamformers_SSHybrid/3_15/D1_sshybk303.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/3_15/D1_sshybk303.wav" type="audio/wav"></ts-source>
+              
+          
+          <ts-track title="(D2) Ref" data-img="multimedia/20230301_beamformers_SSHybrid/3_15/D2_ref.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/3_15/D2_ref.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D2) Pass" data-img="multimedia/20230301_beamformers_SSHybrid/3_15/D2_pass.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/3_15/D2_pass.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D2) Iso" data-img="multimedia/20230301_beamformers_SSHybrid/3_15/D2_iso.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/3_15/D2_iso.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D2) SSH" data-img="multimedia/20230301_beamformers_SSHybrid/3_15/D2_sshyb.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/3_15/D2_sshyb.wav" type="audio/wav"></ts-source>
+              
+          <ts-track title="(D2) SSH-K" data-img="multimedia/20230301_beamformers_SSHybrid/3_15/D2_sshybk303.png">
+              <ts-source src="multimedia/20230301_beamformers_SSHybrid/3_15/D2_sshybk303.wav" type="audio/wav"></ts-source>
+              
+          
+      </div>
+   </div>
+    
+
+    
+    <script>
+    function openCity(evt, cityName) {
+      var i, tabcontent, tablinks;
+      tabcontent = document.getElementsByClassName("tabcontent");
+      for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+      }
+      tablinks = document.getElementsByClassName("tablinks");
+      for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+      }
+      document.getElementById(cityName).style.display = "block";
+      evt.currentTarget.className += " active";
+    }
+
+        document.getElementById("defaultOpen").click();
+    </script>
+    
+
+<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="crossorigin="anonymous"></script>
+<script src="./js/trackswitch.js"></script>
+
+
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+       var settings = {
+           onlyradiosolo: true,
+           repeat: true,
+           tabview: true,
+          };
+        jQuery(".player").trackSwitch(settings); // All other players are default
+    });
+</script>
+
+</body>
+</html>
